@@ -14,7 +14,7 @@ Set-PSDebug -trace 1 -strict
 
 #Spaces in paths are a real PIA!  I'm only working from paths that have no spaces. If I were you, I'd do the same...
 $todaysDate              = Get-Date -Format yyyy-MM-dd
-$usenetTmpDir            = "C:\usernet-tmp"
+$usenetTmpDir            = "I:\usernet-tmp"
 $backupSourceDir         = "I:\Fileserver_backups"
 $pathTo_rarEXE           = "C:\usenet\RAR\Rar.exe"
 $password                = "SuperSECRETPassWordGoesHERe"
@@ -27,9 +27,12 @@ $newsGroup               = "alt.binaries.backup"
 $nzbName                 = "$todaysDate-backup-crap.nzb"
 
 #Create or Delete all files from C:\usernet-tmp\*.*
-if(!(Test-Path -Path $usenetTmpDir )){
-    New-Item -ItemType directory -Path $usenetTmpDir}
-else {
+if(!(Test-Path -Path $usenetTmpDir ))
+{
+    New-Item -ItemType directory -Path $usenetTmpDir
+}
+else 
+{
     Remove-Item $usenetTmpDir\* -Recurse
 }
 
@@ -48,7 +51,8 @@ else {
 #Need to cd to $usenetTmpDir so the rar get created there
 cd $usenetTmpDir
 
-if( Test-Path $backupSourceDir\*.* ){
+if( Test-Path $backupSourceDir\*.* )
+{
     #rar the files
     #a - Add files to archive.
     #ep1 - results in removing the path from the file names inside the archive.
@@ -73,8 +77,10 @@ if( Test-Path $backupSourceDir\*.* ){
     echo "Creating rar files..."
     #Exec program with parms and wait for it to fininsh before continuing.  The nice thing doing it this way
     #is that a cmd will show the progress
-    Start-Process $exe -ArgumentList "$arg1 $arg2 $arg3 $arg4 $arg5 $arg6 $arg7 $arg8" -Wait }
-else {
+    Start-Process $exe -ArgumentList "$arg1 $arg2 $arg3 $arg4 $arg5 $arg6 $arg7 $arg8" -Wait 
+}
+else 
+{
     echo "Nothing to backup"
     exit
 }
@@ -86,13 +92,13 @@ cd $usenetTmpDir
 #/rr15 - 15% redundancy
 #/lr   - Limits the number of recovery blocks per file.
 #/d    - Set the working dir <--Very important
-$exe  = $pathTo_parEXE                                    #"C:\usenet\MultiPar\par2j64.exe"
-$arg1 = 'c'                                               #"c"
-$arg2 = "/rr15"                                           #"/rr15"
-$arg3 = "/lr"                                             #"lr"
-$arg4 = "/d $usenetTmpDir"                                #"C:\usernet-tmp"
-$arg4 = "$($usenetTmpDir)\$($todaysDate)-$($archiveName)" #"C:\usernet-tmp\2015-07-30-backup-stuff"
-$arg5 = "$($usenetTmpDir)\*.rar"                          #C:\usernet-tmp\*.rar
+$exe  = $pathTo_parEXE                                    
+$arg1 = 'c'                                               
+$arg2 = "/rr15"                                           
+$arg3 = "/lr"                                             
+$arg4 = "/d $usenetTmpDir"                                
+$arg4 = "$($usenetTmpDir)\$($todaysDate)-$($archiveName)" 
+$arg5 = "$($usenetTmpDir)\*.rar"                          
 #Debug statements
 #& $exe $arg1 $arg2 $arg3 $arg4 $arg5 | Out-Null
 #Start-Process cmd -ArgumentList '/k',"$($exe) $($arg1) $($arg2) $($arg3) $($arg4) $($arg5)" -Wait
